@@ -94,20 +94,20 @@ func TestInputNSizeOfTheBuffer(t *testing.T) {
 	for i := 1; i < DefaultBufferSize*nTimesBufferSize+1; i++ {
 		_, err := dbuff.Read()
 		if err != nil {
-			t.Fatalf("Error reading byte: %v at pos:%d", err, i)
+			t.Errorf("Error reading byte: %v at pos:%d", err, i)
 		}
 		chunk := i / DefaultBufferSize % nTimesBufferSize
 		if chunk == 0 {
 			if dbuff.currBuffer != 0 {
-				t.Fatalf("Error changing buffer: %d\nShould be 0\n dbuffState: %v", dbuff.currBuffer, dbuff)
+				t.Errorf("Error changing buffer: %d\nShould be 0\n dbuffState: %v", dbuff.currBuffer, dbuff)
 			}
 		} else if chunk == 1 {
 			if dbuff.currBuffer != 1 {
-				t.Fatalf("Error changing buffer: %d\nShould be 1", dbuff.currBuffer)
+				t.Errorf("Error changing buffer: %d\nShould be 1", dbuff.currBuffer)
 			}
 		} else if chunk == 2 {
 			if dbuff.currBuffer != 0 {
-				t.Fatalf("Error changing buffer: %d\nShould be 0", dbuff.currBuffer)
+				t.Errorf("Error changing buffer: %d\nShould be 0", dbuff.currBuffer)
 			}
 		}
 	}
