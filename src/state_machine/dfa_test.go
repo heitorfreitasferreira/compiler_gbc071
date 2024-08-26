@@ -8,7 +8,7 @@ import (
 
 func TestDeterministicWithAssign(t *testing.T) {
 	input := []byte(":=")
-	afd := NewAFD(
+	dfa := NewDFA(
 		[]map[byte]int{
 			map[byte]int{':': 1},
 			map[byte]int{'=': 2},
@@ -22,7 +22,7 @@ func TestDeterministicWithAssign(t *testing.T) {
 			},
 		},
 	)
-	shouldBeNil, err := afd.Step(input[0])
+	shouldBeNil, err := dfa.Step(input[0])
 
 	if err != nil {
 		t.Fatalf("Expected no error, got %v", err)
@@ -30,14 +30,14 @@ func TestDeterministicWithAssign(t *testing.T) {
 	if shouldBeNil != nil {
 		t.Errorf("Expected token to be nil, got %v", shouldBeNil)
 	}
-	if afd.current != 1 {
-		t.Errorf("Expected current state to be 1, got %d", afd.current)
+	if dfa.current != 1 {
+		t.Errorf("Expected current state to be 1, got %d", dfa.current)
 	}
-	if string(afd.lexemeBuilder) != ":" {
-		t.Errorf("Expected lexemeBuilder to be ':', got %s", string(afd.lexemeBuilder))
+	if string(dfa.lexemeBuilder) != ":" {
+		t.Errorf("Expected lexemeBuilder to be ':', got %s", string(dfa.lexemeBuilder))
 	}
 
-	shouldBeAssign, err := afd.Step(input[1])
+	shouldBeAssign, err := dfa.Step(input[1])
 	if err != nil {
 		t.Fatalf("Expected no error, got %v", err)
 	}
@@ -45,11 +45,11 @@ func TestDeterministicWithAssign(t *testing.T) {
 		t.Errorf("Expected token to be ASSIGN, got %v", shouldBeAssign)
 	}
 
-	if afd.current != 0 {
-		t.Errorf("Expected current state to be 0, got %d", afd.current)
+	if dfa.current != 0 {
+		t.Errorf("Expected current state to be 0, got %d", dfa.current)
 	}
-	if len(afd.lexemeBuilder) != 0 {
-		t.Errorf("Expected lexemeBuilder to be empty, got %s", string(afd.lexemeBuilder))
+	if len(dfa.lexemeBuilder) != 0 {
+		t.Errorf("Expected lexemeBuilder to be empty, got %s", string(dfa.lexemeBuilder))
 	}
 }
 
@@ -58,7 +58,7 @@ func TestDealingWithLookAhead(t *testing.T) {
 	expectedLexemes := []string{">=", "<", "!=", "=="}
 	gotLexemes := make([]string, 0)
 
-	afd := NewAFD(
+	dfa := NewDFA(
 		[]map[byte]int{
 			map[byte]int{'<': 1, '>': 4, '=': 7, '!': 9},      //0
 			alphabetNot(map[byte]int{'=': 3}, []byte{'='}, 2), //1
@@ -113,7 +113,7 @@ func TestDealingWithLookAhead(t *testing.T) {
 	)
 
 	for i := 0; i < len(input); i++ {
-		tk, err := afd.Step(input[i])
+		tk, err := dfa.Step(input[i])
 		if err == DealWithLookAheadError {
 			i--
 		}

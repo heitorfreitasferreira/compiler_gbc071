@@ -11,7 +11,7 @@ import (
 type Lexer struct {
 	charsRead    int
 	lastByteRead byte
-	statemachine.AFD
+	statemachine.DFA
 	*types.Position
 	lastPosition *types.Position
 	*bufio.Reader
