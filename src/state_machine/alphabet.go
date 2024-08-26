@@ -92,7 +92,7 @@ var alphabet = map[byte]bool{
 	'!': true,
 }
 
-func alphabetNot(oldTransitionmap map[byte]int, negationChars []byte, negationState int) map[byte]int {
+func addNegationTransitions(oldTransitionmap map[byte]int, negationChars []byte, negationState int) map[byte]int {
 	clone := make(map[byte]int)
 	for k, v := range oldTransitionmap {
 		clone[k] = v

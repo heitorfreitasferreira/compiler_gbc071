@@ -60,11 +60,11 @@ func TestDealingWithLookAhead(t *testing.T) {
 
 	dfa := NewDFA(
 		[]map[byte]int{
-			map[byte]int{'<': 1, '>': 4, '=': 7, '!': 9},      //0
-			alphabetNot(map[byte]int{'=': 3}, []byte{'='}, 2), //1
+			map[byte]int{'<': 1, '>': 4, '=': 7, '!': 9},                 //0
+			addNegationTransitions(map[byte]int{'=': 3}, []byte{'='}, 2), //1
 			map[byte]int{}, //2
 			map[byte]int{}, //3
-			alphabetNot(map[byte]int{'=': 6}, []byte{'='}, 5), //4
+			addNegationTransitions(map[byte]int{'=': 6}, []byte{'='}, 5), //4
 			map[byte]int{},        //5
 			map[byte]int{},        //6
 			map[byte]int{'=': 8},  //7
