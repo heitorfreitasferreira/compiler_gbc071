@@ -3,7 +3,8 @@ package types
 type Token struct {
 	TokenType
 	Position
-	Attr map[string]interface{}
+	Lexeme string
+	Attr   map[string]interface{}
 }
 
 type Position struct {

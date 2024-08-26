@@ -11,7 +11,7 @@ import (
 type Lexer struct {
 	charsRead    int
 	lastByteRead byte
-	statemachine.AFND
+	statemachine.AFD
 	*types.Position
 	lastPosition *types.Position
 	*bufio.Reader
@@ -19,10 +19,11 @@ type Lexer struct {
 	*simboltable.SymbolTable
 }
 
-func NewLexer(reader *bufio.Reader) *Lexer {
+func NewLexer(reader *bufio.Reader, st *simboltable.SymbolTable) *Lexer {
 	return &Lexer{
-		Reader:    reader,
-		charsRead: 0,
+		Reader:      reader,
+		SymbolTable: st,
+		charsRead:   0,
 		Position: &types.Position{
 			Line:   1,
 			Column: 0,

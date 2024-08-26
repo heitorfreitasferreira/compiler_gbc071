@@ -2,30 +2,32 @@ package simboltable
 
 import (
 	"sync"
-
-	"github.com/heitorfreitasferreira/compiler/types"
 )
+
+var ST = NewSymbolTable()
 
 type SymbolTable struct {
 	mu     *sync.Mutex
 	NextId int
-	table  types.BinTree
+	table  map[string]int
 }
 
 func NewSymbolTable() *SymbolTable {
 	return &SymbolTable{
 		mu:     &sync.Mutex{},
 		NextId: 0,
-		table:  types.BinTree{},
+		table:  make(map[string]int),
 	}
 }
 
-func (st *SymbolTable) AddSymbol(symbol string) {
+func (st *SymbolTable) AddSymbol(symbol string) int {
 	st.mu.Lock()
 	defer st.mu.Unlock()
-	inserted := st.table.Add(st.NextId)
-	if !inserted {
-		return // Já existe na tabela
+
+	if _, ok := st.table[symbol]; !ok {
+		st.table[symbol] = st.NextId
+		st.NextId++
 	}
-	st.NextId++
+
+	return st.table[symbol]
 }

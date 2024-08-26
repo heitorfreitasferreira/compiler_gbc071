@@ -6,12 +6,13 @@ import (
 	"testing"
 
 	"github.com/heitorfreitasferreira/compiler/lexer"
+	simboltable "github.com/heitorfreitasferreira/compiler/simbol_table"
 	"github.com/heitorfreitasferreira/compiler/types"
 )
 
 func TestNewLexer(t *testing.T) {
 	reader := bufio.NewReader(strings.NewReader("test"))
-	lexer := lexer.NewLexer(reader)
+	lexer := lexer.NewLexer(reader, simboltable.NewSymbolTable())
 	if lexer.Line != 1 {
 		t.Errorf("Expected line to be 1, got %d", lexer.Line)
 	}
@@ -21,6 +22,7 @@ func TestNewLexer(t *testing.T) {
 }
 
 func TestTokenAndAtr(t *testing.T) {
+	// TODO: Alterar para a interface nova do token com Lexeme
 	testCases := []struct {
 		desc string
 		in   string

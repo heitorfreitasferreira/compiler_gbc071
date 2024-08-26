@@ -91,3 +91,20 @@ var alphabet = map[byte]bool{
 	'<': true,
 	'!': true,
 }
+
+func alphabetNot(oldTransitionmap map[byte]int, negationChars []byte, negationState int) map[byte]int {
+	clone := make(map[byte]int)
+	for k, v := range oldTransitionmap {
+		clone[k] = v
+	}
+
+	for a := range alphabet {
+		for i := 0; i < len(negationChars); i++ {
+			if negationChars[i] == a {
+				continue
+			}
+			clone[a] = negationState
+		}
+	}
+	return clone
+}
