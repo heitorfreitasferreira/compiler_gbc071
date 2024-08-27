@@ -58,7 +58,7 @@ func (l *Lexer) GetNextToken() types.Token {
 		fmt.Printf("Caractere não suportado: [ %s ]\nLinha: %d\nColuna: %d\n", ch, l.Position.Line, l.Position.Column)
 		os.Exit(1)
 	}
-	if token == nil {
+	if token == nil || token.TokenType == types.COMMENT || token.TokenType == types.SEPARATOR {
 		return l.GetNextToken()
 	}
 
