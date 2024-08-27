@@ -2,68 +2,65 @@ package statemachine
 
 import (
 	"errors"
+	"strings"
 
 	"github.com/heitorfreitasferreira/compiler/types"
 )
 
 var (
-	TransitionNotSupported error = errors.New("empty transition not supported")
-	DealWithLookAheadError error = errors.New("this error is treated by the lexer by calling DealWithLookAhead")
+	ErrTransitionNotSupported error = errors.New("empty transition not supported")
+	ErrDealWithLookAhead      error = errors.New("this error is treated by the lexer by calling DealWithLookAhead")
 )
 
 type DFA struct {
-	current       int
-	prev          int
-	states        []map[byte]int                      // Cada estado é representado por um índice no slice
-	final         []bool                              // Lista de booleanos que indicam se o estado é final
-	cleanUp       []func(string) (types.Token, error) // Funções para limpar o estado, como por exemplo, tratar lookahead ou desfazer a leitura de um byte
-	lexemeBuilder []byte
+	currentState  int
+	states        [][]int                              // Cada estado é representado por um índice no slice
+	final         []bool                               // Lista de booleanos que indicam se o estado é final
+	out           []types.Tuple[types.TokenType, bool] // Lista de tokens e se deve tratar look ahead nos estados finais
+	lexemeBuilder strings.Builder
 }
 
-func NewDFA(states []map[byte]int, finals map[int]func(string) (types.Token, error)) *DFA {
+func NewDFA(states [][]int, finals map[int]types.Tuple[types.TokenType, bool]) *DFA {
 	final := make([]bool, len(states))
-	cleanUp := make([]func(string) (types.Token, error), len(states))
+	out := make([]types.Tuple[types.TokenType, bool], len(states))
 	for i, f := range finals {
 		final[i] = true
-		cleanUp[i] = f
+		out[i] = f
 	}
 
 	return &DFA{
-		current:       0, // Estado inicial sempre é 0
-		prev:          0,
+		currentState:  0,
 		states:        states,
 		final:         final,
-		cleanUp:       cleanUp,
-		lexemeBuilder: make([]byte, 0),
+		out:           out,
+		lexemeBuilder: strings.Builder{},
 	}
 }
 
-func (dfa *DFA) Step(b byte) (*types.Token, error) {
-	next, ok := dfa.states[dfa.current][b]
-	ch := string(b)
-	_ = ch
-	if !ok {
-		return nil, TransitionNotSupported
+func (dfa *DFA) Step(transition byte) (*types.Token, bool) {
+	next := dfa.states[dfa.currentState][transition]
+	if next == notInAlphabet {
+		panic("charactere não está no alfabeto")
 	}
-	dfa.prev = dfa.current
-	dfa.current = next
 
-	dfa.lexemeBuilder = append(dfa.lexemeBuilder, b)
+	dfa.currentState = next
 
-	if dfa.final[dfa.current] {
-		lexeme := string(dfa.lexemeBuilder)
-		tk, err := dfa.cleanUp[dfa.current](lexeme)
-		if err == DealWithLookAheadError {
-			// Remove last byte from tk.Atr["lexeme"]
-			tk.Lexeme = tk.Lexeme[:len(tk.Lexeme)-1]
+	dfa.lexemeBuilder.WriteByte(transition)
+
+	if dfa.final[dfa.currentState] {
+		token, lookAhead := dfa.out[dfa.currentState].First, dfa.out[dfa.currentState].Second
+		var lexeme string
+		if lookAhead {
+			lexeme = dfa.lexemeBuilder.String()[:len(dfa.lexemeBuilder.String())-1]
+		} else {
+			lexeme = dfa.lexemeBuilder.String()
 		}
-		dfa.lexemeBuilder = make([]byte, 0)
-		dfa.current = 0
-		return &tk, err
+		dfa.lexemeBuilder.Reset()
+		dfa.currentState = 0
+		return &types.Token{
+			TokenType: token,
+			Lexeme:    lexeme,
+		}, lookAhead
 	}
-	return nil, nil
-}
-
-func (dfa *DFA) GoBackOneState() {
-	dfa.current = dfa.prev
+	return nil, false
 }

@@ -1,5 +1,7 @@
 package statemachine
 
+import "github.com/heitorfreitasferreira/compiler/types"
+
 var alphabet = map[byte]bool{
 	'a': true,
 	'A': true,
@@ -92,6 +94,8 @@ var alphabet = map[byte]bool{
 	'!': true,
 }
 
+const notInAlphabet = -1
+
 func addNegationTransitions(oldTransitionmap map[byte]int, negationChars []byte, negationState int) map[byte]int {
 	clone := make(map[byte]int)
 	for k, v := range oldTransitionmap {
@@ -107,4 +111,33 @@ func addNegationTransitions(oldTransitionmap map[byte]int, negationChars []byte,
 		}
 	}
 	return clone
+}
+
+func GetTransition(positives []types.Tuple[byte, int], negatives ...types.Tuple[[]byte, int]) []int {
+	// find max byte in alphabet
+	max := 0
+	for a := range alphabet {
+		if int(a) > max {
+			max = int(a)
+		}
+	}
+
+	transition := make([]int, max+1)
+	for i := 0; i < max; i++ {
+		transition[i] = notInAlphabet
+	}
+
+	for i := 0; i < len(positives); i++ {
+		transition[positives[i].First] = positives[i].Second
+	}
+	for _, negTuple := range negatives {
+		for a := range alphabet {
+			for negChar := range negTuple.First {
+				if negTuple.First[negChar] != a {
+					transition[a] = negTuple.Second
+				}
+			}
+		}
+	}
+	return transition
 }

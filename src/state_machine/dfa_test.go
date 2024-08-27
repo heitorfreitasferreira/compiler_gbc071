@@ -8,48 +8,40 @@ import (
 
 func TestDeterministicWithAssign(t *testing.T) {
 	input := []byte(":=")
-	dfa := NewDFA(
-		[]map[byte]int{
-			map[byte]int{':': 1},
-			map[byte]int{'=': 2},
-			map[byte]int{},
-		},
-		map[int]func(string) (types.Token, error){
-			2: func(lexeme string) (types.Token, error) {
-				return types.Token{
-					TokenType: types.ASSIGN,
-				}, nil
-			},
-		},
-	)
-	shouldBeNil, err := dfa.Step(input[0])
 
-	if err != nil {
-		t.Fatalf("Expected no error, got %v", err)
+	transitions := [][]int{
+		GetTransition([]types.Tuple[byte, int]{{':', 1}}),
+		GetTransition([]types.Tuple[byte, int]{{'=', 2}}),
+		GetTransition([]types.Tuple[byte, int]{}),
 	}
+	finals := map[int]types.Tuple[types.TokenType, bool]{
+		2: {types.ASSIGN, false},
+	}
+	dfa := NewDFA(
+		transitions,
+		finals,
+	)
+
+	shouldBeNil, lookAhead := dfa.Step(input[0])
 	if shouldBeNil != nil {
 		t.Errorf("Expected token to be nil, got %v", shouldBeNil)
 	}
-	if dfa.current != 1 {
-		t.Errorf("Expected current state to be 1, got %d", dfa.current)
+	if lookAhead {
+		t.Errorf("Expected lookAhead to be false, got %v", lookAhead)
 	}
-	if string(dfa.lexemeBuilder) != ":" {
-		t.Errorf("Expected lexemeBuilder to be ':', got %s", string(dfa.lexemeBuilder))
+	if dfa.currentState != 1 {
+		t.Errorf("Expected current state to be 1, got %d", dfa.currentState)
 	}
 
-	shouldBeAssign, err := dfa.Step(input[1])
-	if err != nil {
-		t.Fatalf("Expected no error, got %v", err)
-	}
+	shouldBeAssign, lookAhead := dfa.Step(input[1])
 	if shouldBeAssign.TokenType != types.ASSIGN {
 		t.Errorf("Expected token to be ASSIGN, got %v", shouldBeAssign)
 	}
-
-	if dfa.current != 0 {
-		t.Errorf("Expected current state to be 0, got %d", dfa.current)
+	if lookAhead {
+		t.Errorf("Expected lookAhead to be false, got %v", lookAhead)
 	}
-	if len(dfa.lexemeBuilder) != 0 {
-		t.Errorf("Expected lexemeBuilder to be empty, got %s", string(dfa.lexemeBuilder))
+	if dfa.currentState != 0 {
+		t.Errorf("Expected current state to be 0, got %d", dfa.currentState)
 	}
 }
 
@@ -57,64 +49,34 @@ func TestDealingWithLookAhead(t *testing.T) {
 	input := []byte(">=<!===")
 	expectedLexemes := []string{">=", "<", "!=", "=="}
 	gotLexemes := make([]string, 0)
-
+	transitions := [][]int{
+		GetTransition([]types.Tuple[byte, int]{{'<', 1}, {'>', 4}, {'=', 7}, {'!', 9}}),
+		GetTransition([]types.Tuple[byte, int]{{'=', 3}}, types.Tuple[[]byte, int]{[]byte{'='}, 2}),
+		GetTransition([]types.Tuple[byte, int]{}),
+		GetTransition([]types.Tuple[byte, int]{}),
+		GetTransition([]types.Tuple[byte, int]{{'=', 6}}, types.Tuple[[]byte, int]{[]byte{'='}, 5}),
+		GetTransition([]types.Tuple[byte, int]{}),
+		GetTransition([]types.Tuple[byte, int]{}),
+		GetTransition([]types.Tuple[byte, int]{{'=', 8}}),
+		GetTransition([]types.Tuple[byte, int]{}),
+		GetTransition([]types.Tuple[byte, int]{{'=', 10}}),
+		GetTransition([]types.Tuple[byte, int]{}),
+	}
+	finals := map[int]types.Tuple[types.TokenType, bool]{
+		2:  {types.RELOP, true},
+		3:  {types.RELOP, false},
+		5:  {types.RELOP, true},
+		6:  {types.RELOP, false},
+		8:  {types.RELOP, false},
+		10: {types.RELOP, false},
+	}
 	dfa := NewDFA(
-		[]map[byte]int{
-			map[byte]int{'<': 1, '>': 4, '=': 7, '!': 9},                 //0
-			addNegationTransitions(map[byte]int{'=': 3}, []byte{'='}, 2), //1
-			map[byte]int{}, //2
-			map[byte]int{}, //3
-			addNegationTransitions(map[byte]int{'=': 6}, []byte{'='}, 5), //4
-			map[byte]int{},        //5
-			map[byte]int{},        //6
-			map[byte]int{'=': 8},  //7
-			map[byte]int{},        //8
-			map[byte]int{'=': 10}, //9
-			map[byte]int{},        //10
-		},
-		map[int]func(string) (types.Token, error){
-			2: func(lexeme string) (types.Token, error) {
-				return types.Token{
-					TokenType: types.RELOP,
-					Lexeme:    lexeme,
-				}, DealWithLookAheadError
-			},
-			3: func(lexeme string) (types.Token, error) {
-				return types.Token{
-					TokenType: types.RELOP,
-					Lexeme:    lexeme,
-				}, nil
-			},
-			5: func(lexeme string) (types.Token, error) {
-				return types.Token{
-					TokenType: types.RELOP,
-					Lexeme:    lexeme,
-				}, DealWithLookAheadError
-			},
-			6: func(lexeme string) (types.Token, error) {
-				return types.Token{
-					TokenType: types.RELOP,
-					Lexeme:    lexeme,
-				}, nil
-			},
-			8: func(lexeme string) (types.Token, error) {
-				return types.Token{
-					TokenType: types.RELOP,
-					Lexeme:    lexeme,
-				}, nil
-			},
-			10: func(lexeme string) (types.Token, error) {
-				return types.Token{
-					TokenType: types.RELOP,
-					Lexeme:    lexeme,
-				}, nil
-			},
-		},
+		transitions,
+		finals,
 	)
-
 	for i := 0; i < len(input); i++ {
-		tk, err := dfa.Step(input[i])
-		if err == DealWithLookAheadError {
+		tk, lookAhead := dfa.Step(input[i])
+		if lookAhead {
 			i--
 		}
 		if tk != nil {
