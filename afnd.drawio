@@ -1285,7 +1285,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="QVVX4uDyyjs9iUhRotrR" name="er_to_afnd">
-    <mxGraphModel dx="780" dy="817" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="380" dy="398" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1300,6 +1300,11 @@
         <mxCell id="Bujnsx0hkrqsERePnn4P-35" value="0" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="Bujnsx0hkrqsERePnn4P-26" vertex="1" connectable="0">
           <mxGeometry x="0.0925" y="2" relative="1" as="geometry">
             <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bvfkUj4S8bMqA1gn-yqU-5" value="[0-9]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Bujnsx0hkrqsERePnn4P-26">
+          <mxGeometry x="0.0842" y="1" relative="1" as="geometry">
+            <mxPoint x="-8" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="Bujnsx0hkrqsERePnn4P-1" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="Bujnsx0hkrqsERePnn4P-47" vertex="1">
@@ -1526,9 +1531,9 @@
             <mxPoint x="110" y="-10" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="86XRWNtU5JNlrkVkk0Sz-281" value="lc_letter" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="86XRWNtU5JNlrkVkk0Sz-277" vertex="1" connectable="0">
+        <mxCell id="86XRWNtU5JNlrkVkk0Sz-281" value="[A-Za-z]" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="86XRWNtU5JNlrkVkk0Sz-277" vertex="1" connectable="0">
           <mxGeometry x="-0.2393" y="1" relative="1" as="geometry">
-            <mxPoint x="4" y="-5" as="offset" />
+            <mxPoint x="3" y="1" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="GGOK2KwyoS9WbpVBP9uL-24" value="" style="ellipse;shape=doubleEllipse;margin=3;whiteSpace=wrap;html=1;align=center;" parent="86XRWNtU5JNlrkVkk0Sz-287" vertex="1">
