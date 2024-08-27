@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0" version="24.7.7" pages="3">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0" version="24.7.7" pages="4">
   <diagram name="main" id="58cdce13-f638-feb5-8d6f-7d28b1aa9fa0">
     <mxGraphModel dx="1301" dy="532" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="none" math="0" shadow="0">
       <root>
@@ -1285,7 +1285,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="QVVX4uDyyjs9iUhRotrR" name="er_to_afnd">
-    <mxGraphModel dx="380" dy="398" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="644" dy="675" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -1634,7 +1634,7 @@
         <mxCell id="86XRWNtU5JNlrkVkk0Sz-296" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;perimeterSpacing=0;shadow=0;" parent="1" vertex="1">
           <mxGeometry x="770" y="160" width="20" height="20" as="geometry" />
         </mxCell>
-        <mxCell id="86XRWNtU5JNlrkVkk0Sz-315" value="num" style="swimlane;horizontal=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+        <mxCell id="86XRWNtU5JNlrkVkk0Sz-315" value="number" style="swimlane;horizontal=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="390" y="120" width="410" height="110" as="geometry" />
         </mxCell>
         <mxCell id="86XRWNtU5JNlrkVkk0Sz-344" value="constant" style="swimlane;horizontal=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
@@ -2752,6 +2752,17 @@
         <mxCell id="GGOK2KwyoS9WbpVBP9uL-239" value="" style="ellipse;shape=doubleEllipse;margin=3;whiteSpace=wrap;html=1;align=center;" parent="GGOK2KwyoS9WbpVBP9uL-241" vertex="1">
           <mxGeometry x="100" y="40" width="20" height="20" as="geometry" />
         </mxCell>
+        <mxCell id="bvfkUj4S8bMqA1gn-yqU-6" value="&lt;div style=&quot;text-align: left;&quot;&gt;Falta:&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;char,&lt;/span&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;main,&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;Separar:&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;begin&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;end&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;if&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;then&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;else&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;while&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;do&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;repeat&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;until&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;ariop_sum&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;ariop_mult&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;ariop_pow&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;&lt;br&gt;&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;Atualizar:&lt;/div&gt;&lt;div style=&quot;text-align: left;&quot;&gt;constant&lt;/div&gt;&lt;div&gt;&amp;nbsp;&lt;/div&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="570" y="830" width="80" height="320" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="Ubw1FXNjAHiHxH7B_BjE" name="anfd_to_afd">
+    <mxGraphModel dx="741" dy="776" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
       </root>
     </mxGraphModel>
   </diagram>
