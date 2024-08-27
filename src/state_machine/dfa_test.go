@@ -22,7 +22,10 @@ func TestDeterministicWithAssign(t *testing.T) {
 		finals,
 	)
 
-	shouldBeNil, lookAhead := dfa.Step(input[0])
+	shouldBeNil, lookAhead, err := dfa.Step(input[0])
+	if err != nil {
+		t.Fatalf("Expected no error, got %v", err)
+	}
 	if shouldBeNil != nil {
 		t.Errorf("Expected token to be nil, got %v", shouldBeNil)
 	}
@@ -33,7 +36,10 @@ func TestDeterministicWithAssign(t *testing.T) {
 		t.Errorf("Expected current state to be 1, got %d", dfa.currentState)
 	}
 
-	shouldBeAssign, lookAhead := dfa.Step(input[1])
+	shouldBeAssign, lookAhead, err := dfa.Step(input[1])
+	if err != nil {
+		t.Fatalf("Expected no error, got %v", err)
+	}
 	if shouldBeAssign.TokenType != types.ASSIGN {
 		t.Errorf("Expected token to be ASSIGN, got %v", shouldBeAssign)
 	}
@@ -75,7 +81,10 @@ func TestDealingWithLookAhead(t *testing.T) {
 		finals,
 	)
 	for i := 0; i < len(input); i++ {
-		tk, lookAhead := dfa.Step(input[i])
+		tk, lookAhead, err := dfa.Step(input[i])
+		if err != nil {
+			t.Fatalf("Expected no error, got %v", err)
+		}
 		if lookAhead {
 			i--
 		}

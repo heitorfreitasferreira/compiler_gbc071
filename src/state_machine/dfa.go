@@ -37,10 +37,10 @@ func NewDFA(states [][]int, finals map[int]types.Tuple[types.TokenType, bool]) *
 	}
 }
 
-func (dfa *DFA) Step(transition byte) (*types.Token, bool) {
+func (dfa *DFA) Step(transition byte) (*types.Token, bool, error) {
 	next := dfa.states[dfa.currentState][transition]
 	if next == notInAlphabet {
-		panic("charactere não está no alfabeto")
+		return nil, false, ErrTransitionNotSupported
 	}
 
 	dfa.currentState = next
@@ -60,7 +60,9 @@ func (dfa *DFA) Step(transition byte) (*types.Token, bool) {
 		return &types.Token{
 			TokenType: token,
 			Lexeme:    lexeme,
-		}, lookAhead
+			Position:  types.Position{},
+			Attr:      map[string]interface{}{},
+		}, lookAhead, nil
 	}
-	return nil, false
+	return nil, false, nil
 }

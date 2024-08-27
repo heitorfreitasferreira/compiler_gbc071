@@ -5,6 +5,7 @@ import (
 )
 
 var ST = NewSymbolTable()
+var ST_KEY = "simbol_table_index"
 
 type SymbolTable struct {
 	mu     *sync.Mutex
