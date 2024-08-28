@@ -96,25 +96,11 @@ var alphabet = map[byte]bool{
 
 const notInAlphabet = -1
 
-func addNegationTransitions(oldTransitionmap map[byte]int, negationChars []byte, negationState int) map[byte]int {
-	clone := make(map[byte]int)
-	for k, v := range oldTransitionmap {
-		clone[k] = v
-	}
-
-	for a := range alphabet {
-		for i := 0; i < len(negationChars); i++ {
-			if negationChars[i] == a {
-				continue
-			}
-			clone[a] = negationState
-		}
-	}
-	return clone
-}
+var Digit []byte = []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
+var Letter []byte = []byte{'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F', 'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R', 's', 'S', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x', 'X', 'y', 'Y', 'z', 'Z'}
+var DigitOrLetter []byte = append(Digit, Letter...)
 
 func GetTransition(positives []types.Tuple[byte, int], negatives ...types.Tuple[[]byte, int]) []int {
-	// find max byte in alphabet
 	max := 0
 	for a := range alphabet {
 		if int(a) > max {
