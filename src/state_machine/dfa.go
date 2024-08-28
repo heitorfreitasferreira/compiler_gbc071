@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	ErrTransitionNotSupported error = errors.New("empty transition not supported")
+	ErrTransitionNotSupported error = errors.New("unexpected character")
 	ErrDealWithLookAhead      error = errors.New("this error is treated by the lexer by calling DealWithLookAhead")
 )
 
