@@ -1,11 +1,11 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"os"
 
 	"github.com/heitorfreitasferreira/compiler/lexer"
+	"github.com/heitorfreitasferreira/compiler/myBufferedByteReader"
 	simboltable "github.com/heitorfreitasferreira/compiler/simbol_table"
 	statemachine "github.com/heitorfreitasferreira/compiler/state_machine"
 	"github.com/heitorfreitasferreira/compiler/types"
@@ -27,7 +27,10 @@ func main() {
 	defer file.Close()
 
 	st := simboltable.NewSymbolTable()
-	l := lexer.NewLexer(bufio.NewReader(file), st, statemachine.DefaultDFA)
+	myBuffReader := &myBufferedByteReader.BufferedByteReader{}
+	myBufferedByteReader.InitBufferedByteReader(myBuffReader, file)
+
+	l := lexer.NewLexer(myBuffReader, st, statemachine.DefaultDFA)
 	fmt.Println("Tokens:")
 	for {
 		token := l.GetNextToken()

@@ -45,14 +45,13 @@ func (l *Lexer) GetNextToken() types.Token {
 		}
 	}
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("error reading file: %v", err))
 	}
 
-	var token *types.Token
-	var lookAhead bool
-	token, lookAhead, err = l.DFA.Step(b)
+	l.peakingByte = b
+	token, lookAhead, err := l.DFA.Step(b)
 	if err == statemachine.ErrTransitionNotSupported {
-		fmt.Printf("Caractere não suportado: [ %s ]\nLinha: %d\nColuna: %d\n", string(b), l.Position.Line, l.Position.Column)
+		fmt.Printf("%v [ %s ]\nLinha: %d\nColuna: %d\n", err, string(b), l.Position.Line, l.Position.Column)
 		os.Exit(1)
 	}
 	if token == nil || token.TokenType == types.COMMENT || token.TokenType == types.SEPARATOR {
@@ -85,9 +84,6 @@ func (l *Lexer) read() (byte, error) {
 		return l.peakingByte, nil
 	}
 	b, err := l.ByteReader.ReadByte()
-	if err != nil {
-		return b, err
-	}
 	if b == '\n' {
 		l.lastPosition.Column = l.Position.Column
 		l.lastPosition.Line = l.Position.Line
@@ -97,5 +93,5 @@ func (l *Lexer) read() (byte, error) {
 		l.lastPosition.Column = l.Position.Column
 		l.Position.Column++
 	}
-	return l.ByteReader.ReadByte()
+	return b, err
 }
