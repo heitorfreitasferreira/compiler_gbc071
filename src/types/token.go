@@ -4,7 +4,7 @@ type Token struct {
 	TokenType
 	Position
 	Lexeme string
-	Attr   map[string]interface{}
+	Id     *int
 }
 
 type Position struct {

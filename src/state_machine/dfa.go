@@ -61,7 +61,7 @@ func (dfa *DFA) Step(transition byte) (*types.Token, bool, error) {
 			TokenType: token,
 			Lexeme:    lexeme,
 			Position:  types.Position{},
-			Attr:      map[string]interface{}{},
+			Id:        nil,
 		}, lookAhead, nil
 	}
 	return nil, false, nil
