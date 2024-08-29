@@ -42,9 +42,7 @@ func (r *BufferedByteReader) loadBuff() error {
 	r.currBuffIndex = (r.currBuffIndex + 1) % numberOfBuffers
 
 	n, err := r.file.Read(r.bufs[r.currBuffIndex][:])
-	if uint(n) < DefaultBufferSize {
-		r.currBuffLen = uint(n)
-	}
+	r.currBuffLen = uint(n)
 	if err != nil {
 		return err
 	}
