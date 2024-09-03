@@ -11,11 +11,8 @@ func Test(t *testing.T) {
 	positives := []types.Tuple[byte, int]{
 		{byte('='), 1},
 	}
-	negatives := []types.Tuple[[]byte, int]{
-		{[]byte{'='}, 2},
-	}
 
-	transition := GetTransition(positives, negatives...)
+	transition := GetTransition(positives, 2)
 
 	for letter := range globalAlphabet {
 		if letter == '=' {

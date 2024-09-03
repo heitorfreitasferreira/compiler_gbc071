@@ -6,10 +6,10 @@ import "github.com/heitorfreitasferreira/compiler/types"
 var DefaultDFA *DFA = NewDFA(
 	[][]int{
 		GetTransition([]types.Tuple[byte, int]{{'<', 1}, {'>', 4}, {'=', 7}, {'!', 9}}),
-		GetTransition([]types.Tuple[byte, int]{{'=', 3}}, types.Tuple[[]byte, int]{[]byte{'='}, 2}),
+		GetTransition([]types.Tuple[byte, int]{{'=', 3}}, 2),
 		GetTransition([]types.Tuple[byte, int]{}),
 		GetTransition([]types.Tuple[byte, int]{}),
-		GetTransition([]types.Tuple[byte, int]{{'=', 6}}, types.Tuple[[]byte, int]{[]byte{'='}, 5}),
+		GetTransition([]types.Tuple[byte, int]{{'=', 6}}, 5),
 		GetTransition([]types.Tuple[byte, int]{}),
 		GetTransition([]types.Tuple[byte, int]{}),
 		GetTransition([]types.Tuple[byte, int]{{'=', 8}}),
