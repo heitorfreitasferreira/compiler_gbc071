@@ -2,7 +2,7 @@ package statemachine
 
 import "github.com/heitorfreitasferreira/compiler/types"
 
-var alphabet = map[byte]bool{
+var globalAlphabet = map[byte]bool{
 	'a': true,
 	'A': true,
 	'b': true,
@@ -94,6 +94,9 @@ var alphabet = map[byte]bool{
 	'!': true,
 }
 
+// Pelo amor de deus não pode ser um caractere do alfabeto
+const emptyTransition byte = '$'
+
 const notInAlphabet = -1
 
 var Digit []byte = []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
@@ -102,7 +105,7 @@ var DigitOrLetter []byte = append(Digit, Letter...)
 
 func GetTransition(positives []types.Tuple[byte, int], negatives ...types.Tuple[[]byte, int]) []int {
 	max := 0
-	for a := range alphabet {
+	for a := range globalAlphabet {
 		if int(a) > max {
 			max = int(a)
 		}
@@ -117,7 +120,7 @@ func GetTransition(positives []types.Tuple[byte, int], negatives ...types.Tuple[
 		transition[positives[i].First] = positives[i].Second
 	}
 	for _, negTuple := range negatives {
-		for a := range alphabet {
+		for a := range globalAlphabet {
 			for negChar := range negTuple.First {
 				if negTuple.First[negChar] != a {
 					transition[a] = negTuple.Second

@@ -17,7 +17,7 @@ func Test(t *testing.T) {
 
 	transition := GetTransition(positives, negatives...)
 
-	for letter := range alphabet {
+	for letter := range globalAlphabet {
 		if letter == '=' {
 			if transition[int(letter)] != 1 {
 				t.Errorf("Expected transition to 1, got %d", transition[int(letter)])
@@ -27,5 +27,11 @@ func Test(t *testing.T) {
 				t.Errorf("Expected transition to 2, got %d", transition[int(letter)])
 			}
 		}
+	}
+}
+
+func TestEmptyTransitionNotInGlobalAlphabet(t *testing.T) {
+	if _, exists := globalAlphabet[emptyTransition]; exists {
+		t.Errorf("Empty transition should not be in global alphabet")
 	}
 }
