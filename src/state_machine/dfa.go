@@ -18,7 +18,6 @@ type DFA struct {
 	final         []bool                               // Lista de booleanos que indicam se o estado é final
 	out           []types.Tuple[types.TokenType, bool] // Lista de tokens e se deve tratar look ahead nos estados finais
 	lexemeBuilder strings.Builder
-	alphabet      map[byte]bool
 }
 
 func NewDFA(states [][]int, finals map[int]types.Tuple[types.TokenType, bool]) *DFA {
