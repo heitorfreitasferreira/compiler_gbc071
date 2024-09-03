@@ -101,7 +101,9 @@ const notInAlphabet = -1
 
 var Digit []byte = []byte{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}
 var Letter []byte = []byte{'a', 'A', 'b', 'B', 'c', 'C', 'd', 'D', 'e', 'E', 'f', 'F', 'g', 'G', 'h', 'H', 'i', 'I', 'j', 'J', 'k', 'K', 'l', 'L', 'm', 'M', 'n', 'N', 'o', 'O', 'p', 'P', 'q', 'Q', 'r', 'R', 's', 'S', 't', 'T', 'u', 'U', 'v', 'V', 'w', 'W', 'x', 'X', 'y', 'Y', 'z', 'Z'}
+var Letter_ []byte = append(Letter, '_')
 var DigitOrLetter []byte = append(Digit, Letter...)
+var DigitOrLetterOrUnderscore []byte = append(DigitOrLetter, '_')
 
 func GetTransition(positives []types.Tuple[byte, int], other ...int) []int {
 	max := 256
@@ -113,6 +115,31 @@ func GetTransition(positives []types.Tuple[byte, int], other ...int) []int {
 
 	for i := 0; i < len(positives); i++ {
 		transition[positives[i].First] = positives[i].Second
+	}
+
+	if len(other) == 1 {
+		for a := range globalAlphabet {
+			if transition[a] == notInAlphabet {
+				transition[a] = other[0]
+			}
+		}
+	}
+	return transition
+}
+
+// Usar essa aqui para transições que vários caracteres podem ir para o mesmo estado, como por exemplo, letras e dígitos
+func GetTransitionLetterDigit(positives []types.Tuple[[]byte, int], other ...int) []int {
+	max := 256
+
+	transition := make([]int, max)
+	for i := 0; i < max; i++ {
+		transition[i] = notInAlphabet
+	}
+
+	for i := 0; i < len(positives); i++ {
+		for tr := range positives[i].First {
+			transition[tr] = positives[i].Second
+		}
 	}
 
 	if len(other) == 1 {
