@@ -137,7 +137,7 @@ func GetTransitionLetterDigit(positives []types.Tuple[[]byte, int], other ...int
 	}
 
 	for i := 0; i < len(positives); i++ {
-		for tr := range positives[i].First {
+		for _, tr := range positives[i].First {
 			transition[tr] = positives[i].Second
 		}
 	}
