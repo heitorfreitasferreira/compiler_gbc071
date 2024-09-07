@@ -72,7 +72,7 @@ func (l *Lexer) dealWithLookAhead() {
 }
 
 func (l *Lexer) updateSimbolTable(tk *types.Token) {
-	if tk.TokenType == types.IDENTIFIER || tk.TokenType == types.NUM_CONST {
+	if tk.TokenType == types.IDENTIFIER || tk.TokenType == types.CONST {
 		*tk.Id = l.SymbolTable.AddSymbol(tk.Lexeme)
 		return
 	}
