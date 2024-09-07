@@ -5,6 +5,24 @@ import (
 	"strings"
 )
 
+// AppendMultipleSlices appends multiple slices into one.
+func appendMultipleSlices(slices ...[]byte) []byte {
+	var result []byte
+	for _, slice := range slices {
+		result = append(result, slice...)
+	}
+	return result
+}
+
+// CreateByteRange creates a byte array with bytes between start and end, inclusive.
+func createByteRange(start, end byte) []byte {
+	var result []byte
+	for b := start; b <= end; b++ {
+		result = append(result, b)
+	}
+	return result
+}
+
 // Helper function para codificar o conjunto de estados em uma string única
 func encodeStateSet(states []int) string {
 	slices.Sort(states)
