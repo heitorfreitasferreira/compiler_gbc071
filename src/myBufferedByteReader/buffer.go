@@ -14,6 +14,8 @@ type BufferedByteReader struct {
 	bufs [numberOfBuffers][DefaultBufferSize]byte
 
 	currBuffIndex, posInCurrBuf, currBuffLen uint
+
+	insertedLastLineBreak bool
 }
 
 func InitBufferedByteReader(bbr *BufferedByteReader, f io.Reader) {
@@ -21,6 +23,7 @@ func InitBufferedByteReader(bbr *BufferedByteReader, f io.Reader) {
 	bbr.currBuffIndex = numberOfBuffers - 1 // Após a primeira chamada de loadBuff, currBuffIndex será 0
 	bbr.posInCurrBuf = DefaultBufferSize    // Forçar a chamada de loadBuff na primeira chamada de ReadByte
 	bbr.currBuffLen = DefaultBufferSize     // Se não for igual em algum momento, significa que faltam currBuffLen - posInCurrBuf bytes para serem lidos
+	bbr.insertedLastLineBreak = false
 }
 
 func (r *BufferedByteReader) ReadByte() (byte, error) {
@@ -31,6 +34,10 @@ func (r *BufferedByteReader) ReadByte() (byte, error) {
 		}
 	}
 	if r.posInCurrBuf >= r.currBuffLen {
+		if !r.insertedLastLineBreak {
+			r.insertedLastLineBreak = true
+			return '\n', nil
+		}
 		return 0, io.EOF
 	}
 	r.posInCurrBuf++
