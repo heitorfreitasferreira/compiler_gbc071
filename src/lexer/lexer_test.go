@@ -57,11 +57,35 @@ func TestPositionMoving(t *testing.T) {
 				{Line: 2, Column: 1},  // b
 				{Line: 3, Column: 1},  // 12
 				{Line: 4, Column: 1},  // int
-				{Line: 4, Column: 4},  // :
-				{Line: 4, Column: 6},  // v
-				{Line: 4, Column: 7},  // ,
-				{Line: 4, Column: 9},  // u
-				{Line: 4, Column: 10}, // ;
+				{Line: 4, Column: 5},  // :
+				{Line: 4, Column: 7},  // v
+				{Line: 4, Column: 8},  // ,
+				{Line: 4, Column: 10}, // u
+				{Line: 4, Column: 11}, // ;
+			},
+		},
+		{
+			desc: "tokens com lexemas grandes",
+			in:   "begin int: variavel_muito_grande; end\n",
+			out: []types.Position{
+				{Line: 1, Column: 1},  // begin
+				{Line: 1, Column: 7},  // int
+				{Line: 1, Column: 10}, // :
+				{Line: 1, Column: 12}, // variavel_muito_grande
+				{Line: 1, Column: 33}, // ;
+				{Line: 1, Column: 35}, // end
+			},
+		},
+		{
+			desc: "declaracao de lista de variaveis inteiras",
+			in:   "int: v, u;\n",
+			out: []types.Position{
+				{Line: 1, Column: 1},  // int
+				{Line: 1, Column: 4},  // :
+				{Line: 1, Column: 6},  // v
+				{Line: 1, Column: 7},  // ,
+				{Line: 1, Column: 9},  // u
+				{Line: 1, Column: 10}, // ;
 			},
 		},
 	}
