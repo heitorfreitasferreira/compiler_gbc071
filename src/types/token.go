@@ -1,5 +1,7 @@
 package types
 
+import "fmt"
+
 type Token struct {
 	TokenType
 	Position
@@ -50,3 +52,11 @@ const (
 
 	CONST = "CONST"
 )
+
+func (tk Token) String() string {
+	return tk.Lexeme
+}
+
+func (p Position) String() string {
+	return fmt.Sprintf("line %d, column %d", p.Line, p.Column)
+}
