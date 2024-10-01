@@ -16,18 +16,18 @@ type Lexer struct {
 	peaking       bool
 	peakingByte   byte
 
-	*statemachine.DFA
-	types.Position
-	io.ByteReader
-	*simboltable.SymbolTable
+	dfa      *statemachine.DFA
+	position types.Position
+	br       io.ByteReader
+	st       *simboltable.SymbolTable
 }
 
 func NewLexer(reader io.ByteReader, st *simboltable.SymbolTable, dfa *statemachine.DFA) *Lexer {
 	return &Lexer{
-		ByteReader:  reader,
-		SymbolTable: st,
-		DFA:         dfa,
-		Position: types.Position{
+		br:  reader,
+		st:  st,
+		dfa: dfa,
+		position: types.Position{
 			Line:   1,
 			Column: 1,
 		},
@@ -50,9 +50,9 @@ func (l *Lexer) GetNextToken() types.Token {
 	}
 
 	l.peakingByte = b
-	token, lookAhead, err := l.DFA.Step(b)
+	token, lookAhead, err := l.dfa.Step(b)
 	if err == statemachine.ErrTransitionNotSupported {
-		fmt.Printf("%v [ %s ]\nLinha: %d\nColuna: %d\n", err, string(b), l.Position.Line, l.Position.Column)
+		fmt.Printf("%v [ %s ]\nLinha: %d\nColuna: %d\n", err, string(b), l.position.Line, l.position.Column)
 		os.Exit(1)
 	}
 	if token == nil || token.TokenType == types.COMMENT || token.TokenType == types.SEPARATOR {
@@ -71,10 +71,10 @@ func (l *Lexer) GetNextToken() types.Token {
 
 func (l *Lexer) dealWithLookAhead() {
 	if l.peakingByte == '\n' {
-		l.Position.Line--
-		l.Position.Column = l.lastCol
+		l.position.Line--
+		l.position.Column = l.lastCol
 	} else {
-		l.Position.Column--
+		l.position.Column--
 	}
 	l.peaking = true
 }
@@ -83,7 +83,7 @@ func (l *Lexer) updateSimbolTable(tk *types.Token) {
 	if tk.TokenType == types.IDENTIFIER || tk.TokenType == types.CONST {
 		tk.Id = new(int)
 		*tk.Id = -1
-		*tk.Id = l.SymbolTable.AddSymbol(tk.Lexeme)
+		*tk.Id = l.st.AddSymbol(tk.Lexeme)
 		return
 	}
 }
@@ -94,7 +94,7 @@ func (l *Lexer) read() (byte, error) {
 		l.updatePosition(l.peakingByte)
 		return l.peakingByte, nil
 	}
-	b, err := l.ByteReader.ReadByte()
+	b, err := l.br.ReadByte()
 	l.updatePosition(b)
 	return b, err
 }
@@ -103,15 +103,15 @@ func (l *Lexer) assignPosition(tk *types.Token) {
 	tk.Position.Line = l.startOfLexeme.Line
 	tk.Position.Column = l.startOfLexeme.Column
 
-	l.startOfLexeme.Line = l.Position.Line
-	l.startOfLexeme.Column = l.Position.Column
+	l.startOfLexeme.Line = l.position.Line
+	l.startOfLexeme.Column = l.position.Column
 }
 
 func (l *Lexer) updatePosition(b byte) {
 	if b == '\n' {
-		l.Position.Line++
-		l.Position.Column = 1
+		l.position.Line++
+		l.position.Column = 1
 	} else {
-		l.Position.Column++
+		l.position.Column++
 	}
 }
