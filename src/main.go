@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/heitorfreitasferreira/compiler/lexer"
 	"github.com/heitorfreitasferreira/compiler/myBufferedByteReader"
@@ -14,14 +15,17 @@ import (
 func main() {
 	sourceFilePath := os.Args[1:][0]
 
+	sourceFilePath = strings.TrimSpace(sourceFilePath)
 	if sourceFilePath == "" {
-		panic("Please provide a file path as the first argument")
+		fmt.Println("Please provide a file path as the first argument")
+		os.Exit(1)
 	}
 
 	// Open file
 	file, err := os.Open(sourceFilePath)
 	if err != nil {
-		panic(err)
+		fmt.Printf("error opening file: %v\n", err)
+		os.Exit(1)
 	}
 
 	defer file.Close()
