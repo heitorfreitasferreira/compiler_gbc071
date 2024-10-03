@@ -8,8 +8,8 @@ import (
 	"github.com/heitorfreitasferreira/compiler/lexer"
 	"github.com/heitorfreitasferreira/compiler/myBufferedByteReader"
 	simboltable "github.com/heitorfreitasferreira/compiler/simbol_table"
+	"github.com/heitorfreitasferreira/compiler/sintatical"
 	statemachine "github.com/heitorfreitasferreira/compiler/state_machine"
-	"github.com/heitorfreitasferreira/compiler/types"
 )
 
 func main() {
@@ -35,15 +35,21 @@ func main() {
 	myBufferedByteReader.InitBufferedByteReader(myBuffReader, file)
 
 	l := lexer.NewLexer(myBuffReader, st, statemachine.DefaultDFA)
-	fmt.Println("Tokens:")
-	for {
-		token := l.GetNextToken()
-		if token.TokenType == types.EOF {
-			break
-		}
-		fmt.Println(token)
+	analyzer := sintatical.Sintatical{Lexer: l}
+	tree, err := analyzer.Analize()
+	if err != nil {
+		fmt.Printf("%v\n", err)
+		os.Exit(0)
 	}
+	fmt.Println(tree)
+	// fmt.Println("Tokens:")
+	// for {
+	// 	token := l.GetNextToken()
+	// 	fmt.Printf("%v  ", token)
+	// 	if token.TokenType == types.EOF {
+	// 		break
+	// 	}
+	// }
 
-	fmt.Println("\nSymbol Table:")
-	fmt.Println(st)
+	// fmt.Println("\nSymbol Table:", st)
 }
