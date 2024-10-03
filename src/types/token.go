@@ -17,44 +17,46 @@ type Position struct {
 type TokenType string
 
 const (
-	EOF        = "EOF"
-	IDENTIFIER = "IDENTIFIER"
+	EOF        TokenType = "EOF"
+	IDENTIFIER TokenType = "ID"
 
-	ARIOP_POW  = "ARIOP_POW"
-	ARIOP_MULT = "ARIOP_MULT"
-	ARIOP_SUM  = "ARIOP_SUM"
-	RELOP      = "RELOP"
+	ARIOP_POW  TokenType = "ARIOP_POW"
+	ARIOP_MULT TokenType = "ARIOP_MULT"
+	ARIOP_SUM  TokenType = "ARIOP_SUM"
+	RELOP      TokenType = "RELOP"
 
-	ASSIGN = "ASSIGN"
+	ASSIGN TokenType = ":="
 
-	START_PAREN = "START_PAREN"
-	END_PAREN   = "END_PAREN"
+	START_PAREN TokenType = "("
+	END_PAREN   TokenType = ")"
 
-	KW_MAIN   = "MAIN"
-	KW_BEGIN  = "START_BLOCK"
-	KW_END    = "END_BLOCK"
-	KW_TYPE   = "TYPE"
-	KW_IF     = "IF"
-	KW_THEN   = "THEN"
-	KW_ELSE   = "ELSE"
-	KW_WHILE  = "WHILE"
-	KW_DO     = "DO"
-	KW_REPEAT = "REPEAT"
-	KW_UNTIL  = "UNTIL"
+	KW_MAIN   TokenType = "MAIN"
+	KW_BEGIN  TokenType = "BEGIN"
+	KW_END    TokenType = "END"
+	KW_TYPE   TokenType = "TYPE"
+	KW_IF     TokenType = "IF"
+	KW_THEN   TokenType = "THEN"
+	KW_ELSE   TokenType = "ELSE"
+	KW_WHILE  TokenType = "WHILE"
+	KW_DO     TokenType = "DO"
+	KW_REPEAT TokenType = "REPEAT"
+	KW_UNTIL  TokenType = "UNTIL"
 
-	COMMENT = "COMMENT"
+	COMMENT TokenType = "COMMENT"
 
-	KKOMA     = "COMMA"
-	SEMICOLON = "SEMICOLON"
-	SEPARATOR = "SEPARATOR"
+	KKOMA     TokenType = ","
+	SEMICOLON TokenType = ";"
+	SEPARATOR TokenType = "SEPARATOR"
 
-	TYPE_SEPARATOR = "TYPE_SEPARATOR"
+	TYPE_SEPARATOR TokenType = ":"
 
-	CONST = "CONST"
+	CONST TokenType = "CONST"
+
+	EMPTY TokenType = ""
 )
 
 func (tk Token) String() string {
-	return tk.Lexeme
+	return string(tk.TokenType)
 }
 
 func (p Position) String() string {
