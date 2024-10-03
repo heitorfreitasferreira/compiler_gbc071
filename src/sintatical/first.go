@@ -6,7 +6,7 @@ var first = map[types.GrammarSymbol][]types.TokenType{
 	S:             {types.KW_MAIN},
 	BLOCK:         {types.KW_BEGIN},
 	LIST:          {types.IDENTIFIER},
-	LIST_PRIME:    {types.KKOMA},   // WHILE
+	LIST_PRIME:    {types.KKOMA, types.SEMICOLON},
 	DECL_SEQ:      {types.KW_TYPE}, //WHILE
 	DECL:          {types.KW_TYPE},
 	CMD:           {types.KW_IF, types.KW_WHILE, types.KW_REPEAT, types.IDENTIFIER},
@@ -16,13 +16,13 @@ var first = map[types.GrammarSymbol][]types.TokenType{
 	CMD_SEL_PRIME: {types.KW_ELSE},
 	CMD_REP:       {types.KW_WHILE, types.KW_REPEAT},
 	CMD_ATR:       {types.IDENTIFIER},
-	EXP:           {types.START_PAREN, types.CONST},
+	EXP:           {types.START_PAREN, types.CONST, types.IDENTIFIER},
 	EXP_PRIME:     {types.ARIOP_SUM}, //WHILE
-	TERM:          {types.START_PAREN, types.CONST},
+	TERM:          {types.START_PAREN, types.CONST, types.IDENTIFIER},
 	TERM_PRIME:    {types.ARIOP_MULT}, //WHILE
-	FACTOR:        {types.START_PAREN, types.CONST},
+	FACTOR:        {types.START_PAREN, types.CONST, types.IDENTIFIER},
 	FACTOR_PRIME:  {types.ARIOP_POW}, //WHILE
-	COND:          {types.START_PAREN, types.CONST},
+	COND:          {types.START_PAREN, types.CONST, types.IDENTIFIER},
 }
 
 func isInFirst(nt types.GrammarSymbol, token types.TokenType) bool {
