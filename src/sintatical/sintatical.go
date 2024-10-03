@@ -10,7 +10,7 @@ import (
 var proxToken types.Token
 
 type Sintatical struct {
-	lex *lexer.Lexer
+	Lexer lexer.TokenProducer
 }
 
 func (sin *Sintatical) Analize() (ConcreteSintaticalTree, error) {
@@ -18,13 +18,13 @@ func (sin *Sintatical) Analize() (ConcreteSintaticalTree, error) {
 		Root: &types.Node[types.GrammarSymbol]{},
 	}
 
-	proxToken = sin.lex.GetNextToken()
+	proxToken = sin.Lexer.GetNextToken()
 
-	err := s(tree.Root, sin.lex)
+	err := s(tree.Root, sin.Lexer)
 	if err != nil {
 		return tree, err
 	}
-	proxToken = sin.lex.GetNextToken()
+	proxToken = sin.Lexer.GetNextToken()
 	if proxToken.TokenType != types.EOF {
 		return tree, fmt.Errorf("expected EOF at %v", proxToken.Position)
 	}
