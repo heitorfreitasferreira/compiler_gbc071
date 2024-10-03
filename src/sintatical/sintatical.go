@@ -24,7 +24,7 @@ func (sin *Sintatical) Analize() (ConcreteSintaticalTree, error) {
 	if err != nil {
 		return tree, err
 	}
-	proxToken = sin.Lexer.GetNextToken()
+	// proxToken = sin.Lexer.GetNextToken()
 	if proxToken.TokenType != types.EOF {
 		return tree, fmt.Errorf("expected EOF at %v", proxToken.Position)
 	}
