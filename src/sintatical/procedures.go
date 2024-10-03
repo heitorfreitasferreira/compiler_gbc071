@@ -63,7 +63,7 @@ func list(currNode *types.Node[types.GrammarSymbol], lex lexer.TokenProducer) er
 			proxToken = lex.GetNextToken()
 			return nil
 		}
-		return fmt.Errorf("expected ';' at %v", proxToken.Position)
+		return fmt.Errorf("expected ';' at %v, got %v", proxToken.Position, proxToken.TokenType)
 	}
 	return fmt.Errorf("expected identifier at %v", proxToken.Position)
 }
@@ -76,6 +76,7 @@ func listPrime(currNode *types.Node[types.GrammarSymbol], lex lexer.TokenProduce
 		if err := list(listPrimeNode, lex); err != nil {
 			return err
 		}
+		return nil
 	}
 	return nil
 }
@@ -83,8 +84,8 @@ func listPrime(currNode *types.Node[types.GrammarSymbol], lex lexer.TokenProduce
 func decl(currNode *types.Node[types.GrammarSymbol], lex lexer.TokenProducer) error {
 	if proxToken.TokenType == types.KW_TYPE {
 		declNode := currNode.AddChild(DECL)
-		proxToken = lex.GetNextToken()
 		declNode.AddChild(proxToken)
+		proxToken = lex.GetNextToken()
 		if proxToken.TokenType == types.TYPE_SEPARATOR {
 			declNode.AddChild(proxToken)
 			proxToken = lex.GetNextToken()
@@ -122,15 +123,21 @@ func cmd(currNode *types.Node[types.GrammarSymbol], lex lexer.TokenProducer) err
 }
 
 func cmdSeq(currNode *types.Node[types.GrammarSymbol], lex lexer.TokenProducer) error {
-	if isInFirst(CMD, proxToken.TokenType) {
+	for isInFirst(CMD, proxToken.TokenType) {
 		cmdSeqNode := currNode.AddChild(CMD_SEQ)
 		if err := cmd(cmdSeqNode, lex); err != nil {
 			return err
 		}
-		if err := cmdSeq(cmdSeqNode, lex); err != nil {
-			return err
-		}
 	}
+	// if isInFirst(CMD, proxToken.TokenType) {
+	// 	cmdSeqNode := currNode.AddChild(CMD_SEQ)
+	// 	if err := cmd(cmdSeqNode, lex); err != nil {
+	// 		return err
+	// 	}
+	// 	if err := cmdSeq(cmdSeqNode, lex); err != nil {
+	// 		return err
+	// 	}
+	// }
 	return nil
 }
 
@@ -165,13 +172,16 @@ func cmdSel(currNode *types.Node[types.GrammarSymbol], lex lexer.TokenProducer) 
 			if proxToken.TokenType == types.END_PAREN {
 				cmdSelNode.AddChild(proxToken)
 				proxToken = lex.GetNextToken()
-				if err := cmdOrBlock(cmdSelNode, lex); err != nil {
-					return err
+				if proxToken.TokenType == types.KW_THEN {
+					if err := cmdOrBlock(cmdSelNode, lex); err != nil {
+						return err
+					}
+					if err := cmdSelPrime(cmdSelNode, lex); err != nil {
+						return err
+					}
+					return nil
 				}
-				if err := cmdSelPrime(cmdSelNode, lex); err != nil {
-					return err
-				}
-				return nil
+				return fmt.Errorf("expected 'then' at %v", proxToken.Position)
 			}
 			return fmt.Errorf("expected ')' at %v", proxToken.Position)
 		}
