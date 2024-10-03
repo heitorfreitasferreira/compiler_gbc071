@@ -10,25 +10,47 @@ type Node[T comparable] struct {
 	Children []*Node[T]
 }
 
-func (n *Node[T]) AddNode(t T) {
+func (n *Node[T]) AddChild(t T) *Node[T] {
 	if n.Children == nil {
 		n.Children = []*Node[T]{{
 			Value:    t,
 			Children: []*Node[T]{},
 		}}
-		return
+		return n.Children[0]
 	}
 
 	n.Children = append(n.Children, &Node[T]{
 		Value:    t,
 		Children: []*Node[T]{},
 	})
+	return n.Children[len(n.Children)-1]
+}
+
+func (n *Node[T]) IsEqual(other *Node[T]) bool {
+	if n.Value != other.Value {
+		return false
+	}
+	if n.Children == nil && other.Children != nil || n.Children != nil && other.Children == nil {
+		return false
+	}
+	if len(n.Children) != len(other.Children) {
+		return false
+	}
+	for i, child := range n.Children {
+		if !child.IsEqual(other.Children[i]) {
+			return false
+		}
+	}
+	return true
 }
 
 type Tree[T comparable] struct {
 	Root *Node[T]
 }
 
+func (t Tree[T]) IsEqual(other Tree[T]) bool {
+	return t.Root.IsEqual(other.Root)
+}
 func (t Tree[T]) Find(value T) (T, bool) {
 	return t.find(t.Root, value)
 }
