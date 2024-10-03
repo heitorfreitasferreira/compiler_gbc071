@@ -7,7 +7,8 @@ var first = map[types.GrammarSymbol][]types.TokenType{
 	BLOCK:         {types.KW_BEGIN},
 	LIST:          {types.IDENTIFIER},
 	LIST_PRIME:    {types.KKOMA},   // WHILE
-	DECL:          {types.KW_TYPE}, // WHILE
+	DECL_SEQ:      {types.KW_TYPE}, //WHILE
+	DECL:          {types.KW_TYPE},
 	CMD:           {types.KW_IF, types.KW_WHILE, types.KW_REPEAT, types.IDENTIFIER},
 	CMD_SEQ:       {types.KW_IF, types.KW_WHILE, types.IDENTIFIER, types.KW_REPEAT}, // WHILE
 	CMD_OR_BLOCK:  {types.KW_IF, types.KW_WHILE, types.KW_REPEAT, types.IDENTIFIER, types.KW_BEGIN},

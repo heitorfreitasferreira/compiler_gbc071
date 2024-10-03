@@ -7,6 +7,7 @@ const (
 	BLOCK         NonTerminal = "Block"
 	LIST          NonTerminal = "List"
 	LIST_PRIME    NonTerminal = "List'"
+	DECL_SEQ      NonTerminal = "DeclSeq"
 	DECL          NonTerminal = "Decl"
 	CMD           NonTerminal = "Cmd"
 	CMD_SEQ       NonTerminal = "CmdSeq"
