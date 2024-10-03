@@ -10,6 +10,9 @@ import (
 	"github.com/heitorfreitasferreira/compiler/types"
 )
 
+type TokenProducer interface {
+	GetNextToken() types.Token
+}
 type Lexer struct {
 	lastCol       int
 	startOfLexeme types.Position
