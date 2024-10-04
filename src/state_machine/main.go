@@ -40,6 +40,7 @@ var DefaultDFA *DFA = NewDFA(
 			{First: []byte{'w'}, Second: 27},
 			{First: []byte{'r'}, Second: 28},
 			{First: []byte{'u'}, Second: 29},
+            {First: []byte{'{'}, Second: 100},
 			// TODO: Add other states here when available
 		}), // 0
 		GetTransition([]types.Tuple[byte, int]{{First: '=', Second: 30}}, 31),             // 1
@@ -72,7 +73,7 @@ var DefaultDFA *DFA = NewDFA(
 			), Second: 17},
 			{First: []byte{'n'}, Second: 42},
 			{First: []byte{'f'}, Second: 43},
-		}, 41), // 18
+		}, 99), // 18
 		GetTransitionLetterDigit([]types.Tuple[[]byte, int]{
 			{First: appendMultipleSlices(
 				createByteRange('a', 'k'),
@@ -475,6 +476,10 @@ var DefaultDFA *DFA = NewDFA(
 		GetTransition([]types.Tuple[byte, int]{}), // 97
 		GetTransition([]types.Tuple[byte, int]{}), // 98
 		GetTransition([]types.Tuple[byte, int]{}), // 99
+        GetTransition([]types.Tuple[byte, int]{
+            {First: '}', Second: 101},
+        }, 100), // 100
+        GetTransition([]types.Tuple[byte, int]{}), // 101
 	},
 	map[int]types.Tuple[types.TokenType, bool]{
 		5:  {First: types.SEPARATOR, Second: false},
@@ -511,5 +516,6 @@ var DefaultDFA *DFA = NewDFA(
 		97: {First: types.KW_UNTIL, Second: true},
 		98: {First: types.KW_REPEAT, Second: true},
 		99: {First: types.IDENTIFIER, Second: true},
+        101: {First: types.COMMENT, Second: false},
 	},
 )

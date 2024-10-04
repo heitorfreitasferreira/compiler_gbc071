@@ -5,10 +5,10 @@ import "github.com/heitorfreitasferreira/compiler/types"
 var first = map[types.GrammarSymbol][]types.TokenType{
 	S:             {types.KW_MAIN},
 	BLOCK:         {types.KW_BEGIN},
-	LIST:          {types.IDENTIFIER},
-	LIST_PRIME:    {types.KKOMA, types.SEMICOLON},
-	DECL_SEQ:      {types.KW_TYPE}, //WHILE
-	DECL:          {types.KW_TYPE},
+	LIST_INIT:     {types.KW_TYPE},
+	LIST_MULT:     {types.KKOMA},
+	LIST_END:      {types.KKOMA, types.SEMICOLON},
+	LIST_SEQ:      {types.KW_TYPE}, // WHILE
 	CMD:           {types.KW_IF, types.KW_WHILE, types.KW_REPEAT, types.IDENTIFIER},
 	CMD_SEQ:       {types.KW_IF, types.KW_WHILE, types.IDENTIFIER, types.KW_REPEAT}, // WHILE
 	CMD_OR_BLOCK:  {types.KW_IF, types.KW_WHILE, types.KW_REPEAT, types.IDENTIFIER, types.KW_BEGIN},

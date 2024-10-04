@@ -1,0 +1,23 @@
+S → main id Block eof
+Block → begin ListSeq CmdSeq end
+ListInit → type: id ListEnd
+ListMult → , id
+ListEnd → ListMult ListEnd | ;
+ListSeq → ListInit ListSeq | ε
+Cmd → CmdSel | CmdRep | CmdAtr
+CmdSeq → Cmd CmdSeq  | ε
+CmdOrBlock → Cmd | Block
+CmdSel → if (Cond) then CmdOrBlock CmdSel'
+CmdSel'→ else CmdOrBlock | ε
+CmdRep → while (Cond) do CmdOrBlock | repeat CmdOrBlock until (Cond);
+CmdAtr → id assign Exp;
+Exp → Term Exp' 
+Exp' → ariop_sum Term Exp' | ε 
+Term → Factor Term' 
+Term' → ariop_mult Factor Term' | ε 
+Factor → UnaryExp Factor' | (Exp) Factor | IdOrConst Factor'
+Factor' → ariop_pow Factor Factor' | ε 
+UnaryExp → + IdOrConst | - IdOrConst
+IdOrConst → id | const
+Cond → Exp relop Exp | (Cond) relop (Cond)
+

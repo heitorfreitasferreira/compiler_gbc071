@@ -10,6 +10,7 @@ import (
 	simboltable "github.com/heitorfreitasferreira/compiler/simbol_table"
 	"github.com/heitorfreitasferreira/compiler/sintatical"
 	statemachine "github.com/heitorfreitasferreira/compiler/state_machine"
+	"github.com/heitorfreitasferreira/compiler/types"
 )
 
 func main() {
@@ -35,6 +36,19 @@ func main() {
 	myBufferedByteReader.InitBufferedByteReader(myBuffReader, file)
 
 	l := lexer.NewLexer(myBuffReader, st, statemachine.DefaultDFA)
+	onlyLexer := false
+	if onlyLexer {
+		fmt.Println("Tokens:")
+		for {
+			token := l.GetNextToken()
+			fmt.Printf("%v  ", token)
+			if token.TokenType == types.EOF {
+				break
+			}
+		}
+		return
+	}
+
 	analyzer := sintatical.Sintatical{Lexer: l}
 	tree, err := analyzer.Analize()
 	if err != nil {
@@ -42,14 +56,6 @@ func main() {
 		os.Exit(0)
 	}
 	fmt.Println(tree)
-	// fmt.Println("Tokens:")
-	// for {
-	// 	token := l.GetNextToken()
-	// 	fmt.Printf("%v  ", token)
-	// 	if token.TokenType == types.EOF {
-	// 		break
-	// 	}
-	// }
 
 	// fmt.Println("\nSymbol Table:", st)
 }

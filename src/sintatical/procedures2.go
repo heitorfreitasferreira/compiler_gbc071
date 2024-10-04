@@ -24,7 +24,7 @@ func s2(lex lexer.TokenProducer) error {
 func block2(lex lexer.TokenProducer) error {
 	if proxToken.TokenType == types.KW_BEGIN {
 		proxToken = lex.GetNextToken()
-		if err := declSeq2(lex); err != nil {
+		if err := listSeq2(lex); err != nil {
 			return err
 		}
 		if err := cmdSeq2(lex); err != nil {
@@ -38,56 +38,54 @@ func block2(lex lexer.TokenProducer) error {
 	return fmt.Errorf("erro block2")
 }
 
-func list2(lex lexer.TokenProducer) error {
-	if proxToken.TokenType == types.IDENTIFIER {
-		proxToken = lex.GetNextToken()
-		if err := listPrime2(lex); err != nil {
-			return err
-		}
-		return nil
-	}
-	return fmt.Errorf("erro list2")
+func listInit2(lex lexer.TokenProducer) error {
+    if proxToken.TokenType == types.KW_TYPE {
+        proxToken = lex.GetNextToken()
+        if proxToken.TokenType == types.TYPE_SEPARATOR {
+            proxToken = lex.GetNextToken()
+            if proxToken.TokenType == types.IDENTIFIER {
+                proxToken = lex.GetNextToken()
+                if err := listEnd2(lex); err != nil {
+                    return err
+                }
+                return nil
+            }
+        }
+    }
+    return fmt.Errorf("erro listInit2")
 }
 
-func listPrime2(lex lexer.TokenProducer) error {
-	for proxToken.TokenType == types.KKOMA {
-		proxToken = lex.GetNextToken()
-		if proxToken.TokenType == types.IDENTIFIER {
-			proxToken = lex.GetNextToken()
-		}
-	}
-	if proxToken.TokenType == types.SEMICOLON {
-		proxToken = lex.GetNextToken()
-		return nil
-	}
-	return fmt.Errorf("erro listPrime2") // Ta dando erro aqui que não era pra dar
+func listMult2(lex lexer.TokenProducer) error {
+    if proxToken.TokenType == types.KKOMA {
+        proxToken = lex.GetNextToken()
+        if proxToken.TokenType == types.IDENTIFIER {
+            proxToken = lex.GetNextToken()
+            return nil
+        }
+    }
+    return fmt.Errorf("erro listMult2")
 }
 
-func declSeq2(lex lexer.TokenProducer) error {
-	if isInFirst(DECL, proxToken.TokenType) {
-		if err := decl2(lex); err != nil {
-			return err
-		}
-		if err := declSeq2(lex); err != nil {
-			return err
-		}
-		return nil
-	}
-	return nil
+func listEnd2(lex lexer.TokenProducer) error {
+    for isInFirst(LIST_MULT, proxToken.TokenType) {
+        if err := listMult2(lex); err != nil {
+            return err
+        }
+    }
+    if proxToken.TokenType == types.SEMICOLON {
+        proxToken = lex.GetNextToken()
+        return nil
+    }
+    return fmt.Errorf("erro listEnd2")
 }
 
-func decl2(lex lexer.TokenProducer) error {
-	if proxToken.TokenType == types.KW_TYPE {
-		proxToken = lex.GetNextToken()
-		if proxToken.TokenType == types.TYPE_SEPARATOR {
-			proxToken = lex.GetNextToken()
-			if err := list2(lex); err != nil {
-				return err
-			}
-			return nil
-		}
-	}
-	return fmt.Errorf("erro decl2")
+func listSeq2(lex lexer.TokenProducer) error {
+    for isInFirst(LIST_INIT, proxToken.TokenType) {
+        if err := listInit2(lex); err != nil {
+            return err
+        }
+    }
+    return nil
 }
 
 func cmd2(lex lexer.TokenProducer) error {
@@ -134,7 +132,7 @@ func cmdOrBlock2(lex lexer.TokenProducer) error {
 		}
 		return nil
 	}
-	return fmt.Errorf("erro cmdOrBlock2")
+	return fmt.Errorf("erro cmdOrBlock2 %v", proxToken)
 }
 
 func cmdSel2(lex lexer.TokenProducer) error {
@@ -185,6 +183,7 @@ func cmdRep2(lex lexer.TokenProducer) error {
 			if proxToken.TokenType == types.END_PAREN {
 				proxToken = lex.GetNextToken()
 				if proxToken.TokenType == types.KW_DO {
+                    proxToken = lex.GetNextToken()
 					if err := cmdOrBlock2(lex); err != nil {
 						return err
 					}
@@ -215,7 +214,7 @@ func cmdRep2(lex lexer.TokenProducer) error {
 			}
 		}
 	}
-	return fmt.Errorf("erro cmdRep2")
+	return fmt.Errorf("erro cmdRep2 %v", proxToken)
 }
 
 func cmdAtr2(lex lexer.TokenProducer) error {
@@ -232,7 +231,7 @@ func cmdAtr2(lex lexer.TokenProducer) error {
 			}
 		}
 	}
-	return fmt.Errorf("erro cmdAtr2")
+    return fmt.Errorf("erro cmdAtr2: %v", proxToken)
 }
 
 func exp2(lex lexer.TokenProducer) error {
@@ -283,7 +282,10 @@ func factor2(lex lexer.TokenProducer) error {
 		}
 		if proxToken.TokenType == types.END_PAREN {
 			proxToken = lex.GetNextToken()
-			return nil
+			if err := factorPrime2(lex); err != nil {
+                return err
+                            }
+            return nil
 		}
 	}
 	if proxToken.TokenType == types.CONST {
@@ -306,6 +308,7 @@ func factor2(lex lexer.TokenProducer) error {
 func factorPrime2(lex lexer.TokenProducer) error {
 	for proxToken.TokenType == types.ARIOP_POW {
 		proxToken = lex.GetNextToken()
+        fmt.Println("foi ariop_pow")
 		if err := factor2(lex); err != nil {
 			return err
 		}
