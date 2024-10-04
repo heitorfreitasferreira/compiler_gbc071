@@ -20,7 +20,7 @@ func (sin *Sintatical) Analize() (ConcreteSintaticalTree, error) {
 
 	proxToken = sin.Lexer.GetNextToken()
 
-	err := s(sin.Lexer)
+	err := s(tree.Root, sin.Lexer)
 	if err != nil {
 		return tree, err
 	}

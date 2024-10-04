@@ -22,8 +22,8 @@ var first = map[types.GrammarSymbol][]types.TokenType{
 	TERM_PRIME:    {types.ARIOP_MULT}, //WHILE
 	FACTOR:        {types.ARIOP_SUM, types.START_PAREN, types.CONST, types.IDENTIFIER},
 	FACTOR_PRIME:  {types.ARIOP_POW}, //WHILE
-    UNARY_EXP:      {types.ARIOP_SUM},
-    ID_OR_CONST:     {types.CONST, types.IDENTIFIER},
+	UNARY_EXP:     {types.ARIOP_SUM},
+	ID_OR_CONST:   {types.CONST, types.IDENTIFIER},
 	COND:          {types.ARIOP_SUM, types.START_PAREN, types.CONST, types.IDENTIFIER},
 }
 
