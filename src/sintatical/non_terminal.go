@@ -22,6 +22,8 @@ const (
 	TERM_PRIME    NonTerminal = "Term'"
 	FACTOR        NonTerminal = "Factor"
 	FACTOR_PRIME  NonTerminal = "Factor'"
+    UNARY_EXP      NonTerminal = "UnaryExp"
+    ID_OR_CONST     NonTerminal = "IdOrConst"
 	COND          NonTerminal = "Cond"
 )
 

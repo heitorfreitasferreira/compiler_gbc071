@@ -69,7 +69,6 @@ func (l *Lexer) GetNextToken() types.Token {
 		l.dealWithLookAhead()
 	}
 	l.assignPosition(token)
-    fmt.Printf("%v ", token)
 	return *token
 }
 

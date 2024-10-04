@@ -1,3 +1,57 @@
+main prog
 begin
->=<!===$
+    int: a, b, c, d, e, w, x, y, i;
+    float: f, g, h, z;
+    char: j, k, l;
+
+    i := -1;
+    a := 2;
+    b := 6 + 3;
+    c := 10;
+    d := 5 * 7;
+    e := 7 ** 9;
+    w := 9 / 5;
+    y := (b + c) * d / w;
+
+    f := 6.01;
+    g := 0.1E-2;
+    h := f;
+    z := 1.564E-4 - 6.01;
+    
+    j := 'b';
+    k := 'g';
+    l := k;
+
+    if (a > 3) then
+        a := 3 + 1;
+    
+    if (b < c) then
+        b := c;
+    else
+        c := ((c + 3) / 5 * 4) ** 5; { quando coloco ** no lugar de - da erro }
+    
+    if (f == h) then
+        begin
+            int: variavel, teste_1, testWYZ, TestVaR;
+
+            variavel := teste_1;
+            testWYZ := TestVaR + 4500;
+        end
+    else
+        begin
+            if (5 + 4 > 7) then
+                j := 'z';
+            else
+                j := 'n';
+        end
+
+    repeat 
+        b := b + 1; 
+    until (b == 1000);
+    repeat 
+        begin
+            while (k != j) do
+                k := k + 1;
+        end
+    until (g <= 2);
 end
