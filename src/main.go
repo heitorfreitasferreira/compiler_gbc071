@@ -55,5 +55,21 @@ func main() {
 		fmt.Printf("%v\n", err)
 		os.Exit(0)
 	}
-	fmt.Println(tree)
+	fmt.Println("Código válido!")
+	fmt.Println("Escrevendo árvore sintática em arquivo...")
+	treeFile, err := os.Create(sourceFilePath + ".tree")
+	if err != nil {
+		fmt.Printf("error creating file: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Fprintf(treeFile, tree.String())
+	fmt.Printf("Árvore sintática escrita em '%v.tree'\n", sourceFilePath)
+	fmt.Println("Escrevendo tabela de símbolos em arquivo...")
+	stFile, err := os.Create(sourceFilePath + ".st.json")
+	if err != nil {
+		fmt.Printf("error creating file: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Fprintf(stFile, st.String())
+	fmt.Printf("Tabela de símbolos escrita em '%v.st.json'\n", sourceFilePath)
 }

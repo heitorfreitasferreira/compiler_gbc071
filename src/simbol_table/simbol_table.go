@@ -1,6 +1,8 @@
 package simboltable
 
 import (
+	"fmt"
+	"strings"
 	"sync"
 )
 
@@ -31,4 +33,14 @@ func (st *SymbolTable) AddSymbol(symbol string) int {
 	}
 
 	return st.table[symbol]
+}
+
+func (st *SymbolTable) String() string {
+	sb := strings.Builder{}
+	sb.WriteString("{\n")
+	for k, v := range st.table {
+		sb.WriteString(fmt.Sprintf("\t\"%v\": \"%v\"\n", k, v))
+	}
+	sb.WriteString("}\n")
+	return sb.String()
 }
