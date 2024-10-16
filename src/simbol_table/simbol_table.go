@@ -39,7 +39,7 @@ func (st *SymbolTable) String() string {
 	sb := strings.Builder{}
 	sb.WriteString("{\n")
 	for k, v := range st.table {
-		sb.WriteString(fmt.Sprintf("\t\"%v\": \"%v\"\n", k, v))
+		sb.WriteString(fmt.Sprintf("\t\"%v\": \"%v\"\n", v, k))
 	}
 	sb.WriteString("}\n")
 	return sb.String()

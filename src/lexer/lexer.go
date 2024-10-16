@@ -69,6 +69,13 @@ func (l *Lexer) GetNextToken() types.Token {
 		l.dealWithLookAhead()
 	}
 	l.assignPosition(token)
+
+	if token.Id != nil {
+		fmt.Printf("ID: %v, Lexema: %v\n", *token.Id, token.Lexeme)
+	} else {
+		fmt.Printf("ID: nil, Lexema: %v\n", token.Lexeme)
+	}
+
 	return *token
 }
 
